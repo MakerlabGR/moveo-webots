@@ -1,1 +1,3 @@
 *.cache
+controllers/*/build/
+controllers/moveo-controller/moveo-controller
