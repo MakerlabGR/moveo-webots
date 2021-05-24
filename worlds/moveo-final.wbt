@@ -1,0 +1,230 @@
+#VRML_SIM R2021a utf8
+WorldInfo {
+  basicTimeStep 16
+}
+Viewpoint {
+  orientation 0.8360474047300385 -0.32728133629687955 -0.4403540211646714 1.453378191143418
+  position -0.8269798914766162 -0.8980894378794687 0.8104667564526503
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+Floor {
+  rotation 1 0 0 1.5708
+}
+Robot {
+  children [
+    DEF base Solid {
+      translation 0 0 0.032
+      rotation 1 0 0 0
+      children [
+        Shape {
+          appearance DEF moveo PBRAppearance {
+            baseColor 1 0.333333 0
+            roughness 0.6
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "meshes/base.stl"
+            ]
+          }
+        }
+        DEF shoulder HingeJoint {
+          jointParameters HingeJointParameters {
+            axis 0 0 1
+          }
+          device [
+            RotationalMotor {
+              name "shoulder-motor"
+            }
+          ]
+          endPoint DEF shoulder Solid {
+            translation 0 0 0.145
+            rotation 1 0 0 1.5707996938995745
+            children [
+              Shape {
+                appearance USE moveo
+                geometry Mesh {
+                  url [
+                    "meshes/shoulder.stl"
+                  ]
+                }
+              }
+              DEF arm HingeJoint {
+                jointParameters HingeJointParameters {
+                  anchor 0 0.0525 0
+                }
+                device [
+                  RotationalMotor {
+                    name "arm-motor"
+                    maxVelocity 3
+                  }
+                ]
+                endPoint DEF arm Solid {
+                  translation 0 0.1575 0
+                  rotation 0.5773502691896258 0.5773502691896258 -0.5773502691896258 2.094399693899575
+                  children [
+                    Shape {
+                      appearance USE moveo
+                      geometry Mesh {
+                        url [
+                          "meshes/arm.stl"
+                        ]
+                      }
+                    }
+                    DEF forearm HingeJoint {
+                      jointParameters HingeJointParameters {
+                        axis 0 1 0
+                        anchor 0 0 -0.1165
+                      }
+                      device [
+                        RotationalMotor {
+                          name "forearm-motor"
+                          maxVelocity 3
+                        }
+                      ]
+                      endPoint DEF forearm Solid {
+                        translation 0 0 -0.15765
+                        rotation 0 -1 0 1.5707996938995745
+                        children [
+                          Shape {
+                            appearance USE moveo
+                            geometry Mesh {
+                              url [
+                                "meshes/forearm.stl"
+                              ]
+                            }
+                          }
+                          DEF wrist HingeJoint {
+                            jointParameters HingeJointParameters {
+                              anchor -0.06 0 0
+                            }
+                            device [
+                              RotationalMotor {
+                                name "wrist-motor"
+                                maxTorque 3
+                              }
+                            ]
+                            endPoint DEF wrist Solid {
+                              translation -0.153 0 0
+                              rotation 0.5773502691896258 -0.5773502691896258 -0.5773502691896258 2.0944
+                              children [
+                                Shape {
+                                  appearance USE moveo
+                                  geometry Mesh {
+                                    url [
+                                      "meshes/wrist.stl"
+                                    ]
+                                  }
+                                }
+                                DEF hand HingeJoint {
+                                  jointParameters HingeJointParameters {
+                                    anchor 0 0 0.03
+                                  }
+                                  device [
+                                    RotationalMotor {
+                                      name "hand-motor"
+                                      maxVelocity 3
+                                    }
+                                  ]
+                                  endPoint DEF hand Solid {
+                                    translation 0 0 0.033
+                                    rotation 0.7071067811865476 -0.7071067811865476 0 3.141592653589793
+                                    children [
+                                      Shape {
+                                        appearance USE moveo
+                                        geometry Mesh {
+                                          url [
+                                            "meshes/hand.stl"
+                                          ]
+                                        }
+                                      }
+                                      DEF gripper gripper {
+                                        translation 0.003 0 -0.038
+                                        rotation -0.7071067811865476 -0.7071067811865476 0 3.141592653589793
+                                        left_motor [
+                                          RotationalMotor {
+                                            name "gripperL-motor"
+                                            minPosition -0.2
+                                            maxPosition 1.5
+                                          }
+                                        ]
+                                        right_motor [
+                                          RotationalMotor {
+                                            name "gripperR-motor"
+                                            minPosition -0.2
+                                            maxPosition 1.5
+                                          }
+                                        ]
+                                        appearance USE moveo
+                                      }
+                                    ]
+                                    boundingObject Box {
+                                      size 0.068 0.047 0.076
+                                    }
+                                    physics Physics {
+                                      density -1
+                                      mass 0.2
+                                    }
+                                  }
+                                }
+                              ]
+                              boundingObject Box {
+                                size 0.088 0.07 0.13
+                              }
+                              physics Physics {
+                                density -1
+                                mass 0.5
+                              }
+                            }
+                          }
+                        ]
+                        boundingObject Box {
+                          size 0.175 0.077 0.07
+                        }
+                        physics Physics {
+                          density -1
+                          mass 1.2
+                        }
+                      }
+                    }
+                  ]
+                  boundingObject Box {
+                    size 0.085 0.125 0.325
+                  }
+                  physics Physics {
+                    density -1
+                    mass 2
+                  }
+                }
+              }
+            ]
+            boundingObject Cylinder {
+              height 0.225
+              radius 0.08
+            }
+            physics Physics {
+              density -1
+              mass 4.7
+              centerOfMass [
+                0 -0.04 0
+              ]
+            }
+          }
+        }
+      ]
+      boundingObject Transform {
+        rotation 1 0 0 1.5708
+        children [
+          Cylinder {
+            height 0.064
+            radius 0.08
+          }
+        ]
+      }
+    }
+  ]
+  controller "moveo-controller"
+}

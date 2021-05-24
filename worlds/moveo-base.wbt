@@ -1,0 +1,47 @@
+#VRML_SIM R2021a utf8
+WorldInfo {
+  basicTimeStep 16
+}
+Viewpoint {
+  orientation 0.8360474047300385 -0.32728133629687955 -0.4403540211646714 1.453378191143418
+  position -0.8269798914766162 -0.8980894378794687 0.8104667564526503
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+Floor {
+  rotation 1 0 0 1.5708
+}
+Robot {
+  children [
+    DEF base Solid {
+      translation 0 0 0.032
+      rotation 1 0 0 0
+      children [
+        Shape {
+          appearance DEF moveo PBRAppearance {
+            baseColor 1 0.333333 0
+            roughness 0.6
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "meshes/base.stl"
+            ]
+          }
+        }
+      ]
+      boundingObject Transform {
+        rotation 1 0 0 1.5708
+        children [
+          Cylinder {
+            height 0.064
+            radius 0.08
+          }
+        ]
+      }
+    }
+  ]
+  controller "moveo-controller"
+}

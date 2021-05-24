@@ -1,0 +1,147 @@
+#VRML_SIM R2021a utf8
+WorldInfo {
+  basicTimeStep 16
+}
+Viewpoint {
+  orientation 0.8360474047300385 -0.32728133629687955 -0.4403540211646714 1.453378191143418
+  position -0.8269798914766162 -0.8980894378794687 0.8104667564526503
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+Floor {
+  rotation 1 0 0 1.5708
+}
+Robot {
+  children [
+    DEF base Solid {
+      translation 0 0 0.032
+      rotation 1 0 0 0
+      children [
+        Shape {
+          appearance DEF moveo PBRAppearance {
+            baseColor 1 0.333333 0
+            roughness 0.6
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "meshes/base.stl"
+            ]
+          }
+        }
+        DEF shoulder HingeJoint {
+          jointParameters HingeJointParameters {
+            axis 0 0 1
+          }
+          device [
+            RotationalMotor {
+              name "shoulder-motor"
+            }
+          ]
+          endPoint DEF shoulder Solid {
+            translation 0 0 0.145
+            rotation 1 0 0 1.5707996938995745
+            children [
+              Shape {
+                appearance USE moveo
+                geometry Mesh {
+                  url [
+                    "meshes/shoulder.stl"
+                  ]
+                }
+              }
+              DEF arm HingeJoint {
+                jointParameters HingeJointParameters {
+                  anchor 0 0.0525 0
+                }
+                device [
+                  RotationalMotor {
+                    name "arm-motor"
+                    maxVelocity 3
+                  }
+                ]
+                endPoint DEF arm Solid {
+                  translation 0 0.1575 0
+                  rotation 0.5773502691896258 0.5773502691896258 -0.5773502691896258 2.094399693899575
+                  children [
+                    Shape {
+                      appearance USE moveo
+                      geometry Mesh {
+                        url [
+                          "meshes/arm.stl"
+                        ]
+                      }
+                    }
+                    DEF forearm HingeJoint {
+                      jointParameters HingeJointParameters {
+                        axis 0 1 0
+                        anchor 0 0 -0.1165
+                      }
+                      device [
+                        RotationalMotor {
+                          name "forearm-motor"
+                          maxVelocity 3
+                        }
+                      ]
+                      endPoint DEF forearm Solid {
+                        translation 0 0 -0.15765
+                        rotation 0 -1 0 1.5707996938995745
+                        children [
+                          Shape {
+                            appearance USE moveo
+                            geometry Mesh {
+                              url [
+                                "meshes/forearm.stl"
+                              ]
+                            }
+                          }
+                        ]
+                        boundingObject Box {
+                          size 0.175 0.077 0.07
+                        }
+                        physics Physics {
+                          density -1
+                          mass 1.2
+                        }
+                      }
+                    }
+                  ]
+                  boundingObject Box {
+                    size 0.085 0.125 0.325
+                  }
+                  physics Physics {
+                    density -1
+                    mass 2
+                  }
+                }
+              }
+            ]
+            boundingObject Cylinder {
+              height 0.225
+              radius 0.08
+            }
+            physics Physics {
+              density -1
+              mass 4.7
+              centerOfMass [
+                0 -0.04 0
+              ]
+            }
+          }
+        }
+      ]
+      boundingObject Transform {
+        rotation 1 0 0 1.5708
+        children [
+          Cylinder {
+            height 0.064
+            radius 0.08
+          }
+        ]
+      }
+    }
+  ]
+  controller "moveo-controller"
+}
